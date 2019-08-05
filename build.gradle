@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.intellij' version '0.4.9'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.41'
+}
+
+group 'GitIntegrationProject.MGGitIntegration'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
+    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.4.2')
+    compile 'org.eclipse.jgit:org.eclipse.jgit:4.5.0.201609210915-r'
+    testImplementation ('org.junit.jupiter:junit-jupiter-api')
+    testRuntime ('org.junit.jupiter:junit-jupiter-engine')
+    compile group: 'org.gitlab', name: 'java-gitlab-api', version: '4.0.0'
+    test.useJUnitPlatform()
+}
+
+// See https://github.com/JetBrains/gradle-intellij-plugin/
+intellij {
+    version '2019.2'
+}
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+patchPluginXml {
+    changeNotes """
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>"""
+}
