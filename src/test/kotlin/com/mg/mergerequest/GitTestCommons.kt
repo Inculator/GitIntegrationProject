@@ -6,12 +6,16 @@ import org.junit.jupiter.api.BeforeAll
 
 open class GitTestCommons {
     companion object {
-        var projectId : Int = 0
+        var projectId: Int = 0
         @BeforeAll
         @JvmStatic
         fun beforeAllTest() {
-            MakeGitConnection.makeConnectionToGit()
-            projectId = getProjectId()
+            val hostUrl = "https://innersource.soprasteria.com/"
+            val token = System.getenv("ENV_GIT_TOKEN")
+            val nameSpace = "t-tool"
+            val projectName = "t-tool"
+            MakeGitConnection.getGitConnectionInstance(hostUrl, token)
+            projectId = getProjectId(nameSpace, projectName)
         }
     }
 }

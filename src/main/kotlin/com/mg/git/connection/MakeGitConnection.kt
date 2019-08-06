@@ -4,7 +4,7 @@ import org.gitlab.api.GitlabAPI
 
 object MakeGitConnection {
     lateinit var gitlabAPI: GitlabAPI
-    fun makeConnectionToGit() {
-        gitlabAPI = GitlabAPI.connect("https://innersource.soprasteria.com/", System.getenv("ENV_GIT_TOKEN"))
+    fun getGitConnectionInstance(hostUrl: String, token: String) {
+        gitlabAPI = GitlabAPI.connect(hostUrl, token)
     }
 }

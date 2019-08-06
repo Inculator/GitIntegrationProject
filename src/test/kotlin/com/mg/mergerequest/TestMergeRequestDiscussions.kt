@@ -15,6 +15,6 @@ class TestMergeRequestDiscussions : GitTestCommons(){
         var listOfMergeRequest = getMergeRequests(projectId)
         var listOfMergeRequestsModels = gitLabMergeRequests(listOfMergeRequest)
         assertNotNull(listOfMergeRequestsModels)
-        assertEquals(1, listOfMergeRequestsModels.size)
+        assertEquals(2, listOfMergeRequestsModels.size)
     }
 }

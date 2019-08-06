@@ -9,23 +9,19 @@ import org.gitlab.api.models.GitlabProject
 
 private val listOfMergeRequestsModels = ArrayList<MergeRequestModel>()
 
-fun getMRDiscussions(mergeRequest: GitlabMergeRequest) : List<GitLabUserNotesModel> {
-
-    val tailUrl = GitlabProject.URL + "/" + mergeRequest.projectId +
-            GitlabMergeRequest.URL + "/" + mergeRequest.iid +
-            GitLabUserNotesModel.URL + Pagination().withPerPage(Pagination.MAX_ITEMS_PER_PAGE).toString()
-
-    return MakeGitConnection.gitlabAPI.retrieve().getAll(tailUrl, Array<GitLabUserNotesModel>::class.java)
-        .filter { note ->  note.type == "DiffNote"}
-}
-
 fun gitLabMergeRequests(listOfMergeRequest : List<GitlabMergeRequest>): ArrayList<MergeRequestModel> {
-
     for (gitlabMergeRequest in listOfMergeRequest) {
         var discussionsList = getMRDiscussions(gitlabMergeRequest)
         var mergeRequestModel = MergeRequestModel(gitlabMergeRequest, discussionsList)
         listOfMergeRequestsModels.add(mergeRequestModel)
     }
-
     return listOfMergeRequestsModels
+}
+
+fun getMRDiscussions(mergeRequest: GitlabMergeRequest) : List<GitLabUserNotesModel> {
+    val tailUrl = GitlabProject.URL + "/" + mergeRequest.projectId +
+            GitlabMergeRequest.URL + "/" + mergeRequest.iid +
+            GitLabUserNotesModel.URL + Pagination().withPerPage(Pagination.MAX_ITEMS_PER_PAGE).toString()
+    return MakeGitConnection.gitlabAPI.retrieve().getAll(tailUrl, Array<GitLabUserNotesModel>::class.java)
+        .filter { note ->  note.type == "DiffNote"}
 }
