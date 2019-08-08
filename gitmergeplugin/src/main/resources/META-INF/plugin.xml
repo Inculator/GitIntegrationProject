@@ -1,0 +1,24 @@
+<idea-plugin>
+    <id>com.mg.gitmergeplugin</id>
+    <name>Git Merge Requests</name>
+    <vendor email="mohakgupta.2012@gmail.com" url="">I AM OF MY OWN</vendor>
+
+    <description>The plugin is a valuable add on to the intelliJ process</description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <group id="MyPlugin.SampleMenu" text="Greeting" description="Greeting menu">
+            <add-to-group group-id="MainMenu" anchor="last"/>
+            <action id="Myplugin.Textboxes" class="com.mg.action.basic.BasicPlugin" text="Hello" description="Says hello"/>
+        </group>
+    </actions>
+</idea-plugin>
