@@ -1,12 +1,9 @@
 <idea-plugin>
     <id>GitIntegrationProject.MGGitIntegration.GitIntegrationProject</id>
-    <name>Plugin display name here</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <name>GitPlugin</name>
+    <vendor email="mohakgupta.2012@gmail.com" url="http://www.yourcompany.com">MYOwnCompany</vendor>
 
-    <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
-    ]]></description>
+    <description>This is my plugin designed for my own MR handling</description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
@@ -20,5 +17,10 @@
 
     <actions>
         <!-- Add your actions here -->
+        <action id="GitIntegrationProject" class="com.mg.plugin.action.impl.MergeRequestPlugin"
+                text="MergeRequestPlugin" description="MergeRequestPlugin">
+            <add-to-group group-id="VcsGroups" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt M"/>
+        </action>
     </actions>
 </idea-plugin>
