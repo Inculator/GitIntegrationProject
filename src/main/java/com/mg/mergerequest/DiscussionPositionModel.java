@@ -2,40 +2,40 @@ package com.mg.mergerequest;
 
 public class DiscussionPositionModel {
 
-    private String old_path;
-    private String new_path;
-    private String old_line;
-    private String new_line;
+    private String oldPath;
+    private String newPath;
+    private String oldLine;
+    private String newLine;
 
-    public String getOld_path() {
-        return old_path;
+    public String getOldPath() {
+        return oldPath;
     }
 
-    public void setOld_path(String old_path) {
-        this.old_path = old_path;
+    public void setOldPath(String oldPath) {
+        this.oldPath = oldPath;
     }
 
-    public String getNew_path() {
-        return new_path;
+    public String getNewPath() {
+        return newPath;
     }
 
-    public void setNew_path(String new_path) {
-        this.new_path = new_path;
+    public void setNewPath(String newPath) {
+        this.newPath = newPath;
     }
 
-    public String getOld_line() {
-        return old_line;
+    public String getOldLine() {
+        return oldLine;
     }
 
-    public void setOld_line(String old_line) {
-        this.old_line = old_line;
+    public void setOldLine(String oldLine) {
+        this.oldLine = oldLine;
     }
 
-    public String getNew_line() {
-        return new_line;
+    public String getNewLine() {
+        return newLine;
     }
 
-    public void setNew_line(String new_line) {
-        this.new_line = new_line;
+    public void setNewLine(String newLine) {
+        this.newLine = newLine;
     }
 }
