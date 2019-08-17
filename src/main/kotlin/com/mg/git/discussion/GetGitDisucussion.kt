@@ -7,9 +7,8 @@ import org.gitlab.api.Pagination
 import org.gitlab.api.models.GitlabMergeRequest
 import org.gitlab.api.models.GitlabProject
 
-private val listOfMergeRequestsModels = ArrayList<MergeRequestModel>()
-
 fun gitLabMergeRequests(listOfMergeRequest : List<GitlabMergeRequest>): ArrayList<MergeRequestModel> {
+    var listOfMergeRequestsModels = ArrayList<MergeRequestModel>()
     for (gitlabMergeRequest in listOfMergeRequest) {
         var discussionsList = getMRDiscussions(gitlabMergeRequest)
         var mergeRequestModel = MergeRequestModel(gitlabMergeRequest, discussionsList)
