@@ -23,11 +23,12 @@ public class DiscussionPanel {
         this.myMergeRequestModelList = myMergeRequestModelList;
         List<Component> userRemovalComponent = new ArrayList<>();
         for (Component comp : panelWrapper.getComponents())
-            if (comp.getName().equalsIgnoreCase("DiscussionList"))
+            if ("DiscussionList".equalsIgnoreCase(comp.getName()))
                 userRemovalComponent.add(comp);
         userRemovalComponent.forEach(comp-> panelWrapper.remove(comp));
         discussionModelList = new DefaultListModel<>();
         gitLabUserNotesModelList = new ArrayList<>();
+        panelWrapper.updateUI();
     }
 
     public void createDiscussionPanel() {
@@ -42,6 +43,6 @@ public class DiscussionPanel {
         final JList jList = new JList<>(discussionModelList);
         jList.setName("DiscussionList");
         panelWrapper.add(jList);
-        panelWrapper.revalidate();
+        panelWrapper.updateUI();
     }
 }
