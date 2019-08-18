@@ -4,12 +4,15 @@ import com.intellij.dvcs.repo.Repository;
 import com.intellij.dvcs.repo.VcsRepositoryManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.messages.MessageDialog;
+import com.intellij.ui.components.JBList;
 import com.mg.git.merge.MergeRequestModel;
 import com.mg.git.utils.GitConnectionUtils;
 import com.mg.git.utils.HostURLModel;
 import com.mg.mergerequest.TestMainMerges;
 
 import javax.swing.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +22,7 @@ public class GitMRDialog extends MessageDialog {
     private static String[] optionsUser = {};
     private String currentBranch = "master";
     public static Project project;
+    List<MergeRequestModel> myMergeRequestModelList;
 
     public GitMRDialog(boolean canBeParent) {
         super(project, "Merge Request Handler", "Merge Requests", optionsUser, 1, null, canBeParent);
@@ -30,20 +34,32 @@ public class GitMRDialog extends MessageDialog {
         panelWrapper = new JPanel();
         panelWrapper.setLayout(new BoxLayout(panelWrapper, BoxLayout.Y_AXIS));
         HostURLModel hostURLModel = getHostURLModel();
-        List<MergeRequestModel> myMergeRequestModelList = new TestMainMerges().
+        myMergeRequestModelList = new TestMainMerges().
                 gitLabMergeRequestsController(hostURLModel.getHost(), hostURLModel.getAlias(), hostURLModel.getProjectName(), System.getenv("ENV_GIT_TOKEN"));
-        addComponentsToPanel(myMergeRequestModelList);
+        addComponentsToPanel();
         return panelWrapper;
     }
 
-    private void addComponentsToPanel(List<MergeRequestModel> myMergeRequestModelList) {
+    private void addComponentsToPanel() {
         myMergeRequestModelList.forEach(mergeRequestModel -> {
-            JLabel hyperlink = null;
+            final DefaultListModel<String> l1 = new DefaultListModel<>();
             if (mergeRequestModel.getMergeRequest().getSourceBranch().equalsIgnoreCase(currentBranch))
-                hyperlink = new JLabel(mergeRequestModel.getMergeRequest().getTitle());
-            if (hyperlink == null)
-                hyperlink = new JLabel("No Merge Request for branch : " + currentBranch);
-            panelWrapper.add(hyperlink);
+                l1.addElement(mergeRequestModel.getMergeRequest().getTitle());
+            if (l1.size() == 0)
+                l1.addElement("No Merge Request for branch : " + currentBranch);
+            l1.addElement("ABC");
+            l1.addElement("DEF");
+            final JList<String> jList = new JList<>(l1);
+            addListActionListener(jList);
+            panelWrapper.add(jList);
+        });
+
+    }
+
+    private void addListActionListener(JList<String> jList) {
+        jList.addListSelectionListener(l-> {
+            new DiscussionPanel(panelWrapper, jList.getSelectedValue(), myMergeRequestModelList)
+                    .createDiscussionPanel();
         });
     }
 
@@ -58,4 +74,5 @@ public class GitMRDialog extends MessageDialog {
         }
         return new HostURLModel("", "", "");
     }
+
 }

@@ -9,8 +9,7 @@ public class MergeRequestPlugin extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
-        Project project = anActionEvent.getProject();
-        GitMRDialog.project = project;
+        GitMRDialog.project = anActionEvent.getProject();
         GitMRDialog dialog = new GitMRDialog(true);
         dialog.show();
     }
