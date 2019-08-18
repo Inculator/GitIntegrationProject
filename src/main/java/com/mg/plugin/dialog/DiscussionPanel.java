@@ -14,7 +14,6 @@ public class DiscussionPanel {
     private String selectedValue;
     private List<MergeRequestModel> myMergeRequestModelList;
     private JPanel panelWrapper;
-    private JList<String> jList;
     private DefaultListModel<String> discussionModelList;
     private List<GitLabUserNotesModel> gitLabUserNotesModelList;
 
@@ -24,7 +23,7 @@ public class DiscussionPanel {
         this.myMergeRequestModelList = myMergeRequestModelList;
         List<Component> userRemovalComponent = new ArrayList<>();
         for (Component comp : panelWrapper.getComponents())
-            if (comp.getName() == "DiscussionList")
+            if (comp.getName().equalsIgnoreCase("DiscussionList"))
                 userRemovalComponent.add(comp);
         userRemovalComponent.forEach(comp-> panelWrapper.remove(comp));
         discussionModelList = new DefaultListModel<>();
@@ -40,7 +39,7 @@ public class DiscussionPanel {
             gitLabUserNotesModelList.forEach(ele -> discussionModelList.addElement(ele.getBody()));
         else
             discussionModelList.addElement("There is no discussion done on this merge request yet !!");
-        jList = new JList<>(discussionModelList);
+        final JList jList = new JList<>(discussionModelList);
         jList.setName("DiscussionList");
         panelWrapper.add(jList);
         panelWrapper.revalidate();

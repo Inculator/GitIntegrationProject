@@ -4,15 +4,12 @@ import com.intellij.dvcs.repo.Repository;
 import com.intellij.dvcs.repo.VcsRepositoryManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.messages.MessageDialog;
-import com.intellij.ui.components.JBList;
 import com.mg.git.merge.MergeRequestModel;
 import com.mg.git.utils.GitConnectionUtils;
 import com.mg.git.utils.HostURLModel;
 import com.mg.mergerequest.TestMainMerges;
 
 import javax.swing.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,10 +54,10 @@ public class GitMRDialog extends MessageDialog {
     }
 
     private void addListActionListener(JList<String> jList) {
-        jList.addListSelectionListener(l-> {
+        jList.addListSelectionListener(l ->
             new DiscussionPanel(panelWrapper, jList.getSelectedValue(), myMergeRequestModelList)
-                    .createDiscussionPanel();
-        });
+                    .createDiscussionPanel()
+        );
     }
 
     private HostURLModel getHostURLModel() {
