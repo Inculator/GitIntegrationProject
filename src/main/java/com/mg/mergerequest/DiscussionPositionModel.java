@@ -1,5 +1,6 @@
 package com.mg.mergerequest;
 
+@SuppressWarnings({"squid:S00116", "squid:S00100", "squid:S00117"})
 public class DiscussionPositionModel {
 
     private String old_path;
