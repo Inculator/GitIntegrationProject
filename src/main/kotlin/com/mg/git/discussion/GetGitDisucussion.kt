@@ -22,5 +22,5 @@ fun getMRDiscussions(mergeRequest: GitlabMergeRequest) : List<GitLabUserNotesMod
             GitlabMergeRequest.URL + "/" + mergeRequest.iid +
             GitLabUserNotesModel.URL + Pagination().withPerPage(Pagination.MAX_ITEMS_PER_PAGE).toString()
     return MakeGitConnection.gitlabAPI.retrieve().getAll(tailUrl, Array<GitLabUserNotesModel>::class.java)
-        .filter { note ->  note.type == "DiffNote" || note.type == null}
+        .filter { note ->  note.type == "DiffNote"}
 }
