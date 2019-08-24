@@ -1,5 +1,8 @@
 package com.mg.plugin.dialog;
 
+import com.intellij.openapi.fileEditor.OpenFileDescriptor;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.mg.git.merge.MergeRequestModel;
 import com.mg.mergerequest.GitLabUserNotesModel;
 import com.mg.plugin.ProvideSwingComponentsUtilsKt;
@@ -39,7 +42,7 @@ public class DiscussionPanel {
         if (mergeRequestModelOptional.isPresent())
             gitLabUserNotesModelList = mergeRequestModelOptional.get().getListOfMRDiscussions();
         if (!gitLabUserNotesModelList.isEmpty())
-            gitLabUserNotesModelList.forEach(ele -> discussionModelList.addElement(ele.getBody() +" : File -> "+ ele.getPosition().getOld_path()));
+            gitLabUserNotesModelList.forEach(ele -> discussionModelList.addElement(ele.getBody() + " : File -> " + ele.getPosition().getOld_path()));
         else
             discussionModelList.addElement("There is no discussion done on this merge request yet !!");
         final JLabel discussionLabel = makeJLabel();
@@ -51,12 +54,20 @@ public class DiscussionPanel {
     }
 
     private void addListActionListener(JList<String> discussionsJList) {
-        discussionsJList.addListSelectionListener(l ->
-                {
-                    System.out.println(gitLabUserNotesModelList.get(0).getPosition().getNew_path());
-                    System.out.println(discussionsJList.getSelectedValue());
+        discussionsJList.addListSelectionListener(l -> {
+                    VirtualFile file = LocalFileSystem.getInstance().findFileByPath(getFilePathToNavigate(discussionsJList));
+                    new OpenFileDescriptor(GitMRDialog.project, file, getLogicalLine(discussionsJList), 0).navigate(true);
                 }
         );
+    }
+
+    private Integer getLogicalLine(JList<String> discussionsJList) {
+        return Integer.parseInt(gitLabUserNotesModelList.get(discussionsJList.getSelectedIndex()).getPosition().getNew_line());
+    }
+
+    @NotNull
+    private String getFilePathToNavigate(JList<String> discussionsJList) {
+        return GitMRDialog.project.getBasePath() + "/" + gitLabUserNotesModelList.get(discussionsJList.getSelectedIndex()).getPosition().getNew_path();
     }
 
     @NotNull
