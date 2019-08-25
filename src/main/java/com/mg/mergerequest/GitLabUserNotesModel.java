@@ -14,6 +14,7 @@ public class GitLabUserNotesModel {
     private boolean upvote;
     private boolean downvote;
     private String type;
+    private boolean resolved;
     private DiscussionPositionModel position;
 
     public Integer getId() {
@@ -86,5 +87,13 @@ public class GitLabUserNotesModel {
 
     public void setPosition(DiscussionPositionModel position) {
         this.position = position;
+    }
+
+    public boolean isResolved() {
+        return resolved;
+    }
+
+    public void setResolved(boolean resolved) {
+        this.resolved = resolved;
     }
 }

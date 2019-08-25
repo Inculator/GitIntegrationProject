@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>GitIntegrationProject.MGGitIntegration.GitIntegrationProject</id>
     <name>GitPlugin</name>
-    <vendor email="mohakgupta.2012@gmail.com" url="http://www.yourcompany.com">MYOwnCompany</vendor>
+    <vendor email="mohakgupta.2012@gmail.com" url="">MYOwnCompany</vendor>
 
     <description>This is my plugin designed for my own MR handling</description>
 

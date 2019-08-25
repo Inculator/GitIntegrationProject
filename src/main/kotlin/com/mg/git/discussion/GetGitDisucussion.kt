@@ -7,7 +7,7 @@ import org.gitlab.api.Pagination
 import org.gitlab.api.models.GitlabMergeRequest
 import org.gitlab.api.models.GitlabProject
 
-fun gitLabMergeRequests(listOfMergeRequest : List<GitlabMergeRequest>): ArrayList<MergeRequestModel> {
+fun gitLabMergeRequests(listOfMergeRequest: List<GitlabMergeRequest>): ArrayList<MergeRequestModel> {
     var listOfMergeRequestsModels = ArrayList<MergeRequestModel>()
     for (gitlabMergeRequest in listOfMergeRequest) {
         var discussionsList = getMRDiscussions(gitlabMergeRequest)
@@ -17,10 +17,10 @@ fun gitLabMergeRequests(listOfMergeRequest : List<GitlabMergeRequest>): ArrayLis
     return listOfMergeRequestsModels
 }
 
-fun getMRDiscussions(mergeRequest: GitlabMergeRequest) : List<GitLabUserNotesModel> {
+fun getMRDiscussions(mergeRequest: GitlabMergeRequest): List<GitLabUserNotesModel> {
     val tailUrl = GitlabProject.URL + "/" + mergeRequest.projectId +
             GitlabMergeRequest.URL + "/" + mergeRequest.iid +
             GitLabUserNotesModel.URL + Pagination().withPerPage(Pagination.MAX_ITEMS_PER_PAGE).toString()
     return MakeGitConnection.gitlabAPI.retrieve().getAll(tailUrl, Array<GitLabUserNotesModel>::class.java)
-        .filter { note ->  note.type == "DiffNote"}
+        .filter { note -> note.type == "DiffNote" && !note.isResolved }
 }
