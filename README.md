@@ -1,7 +1,7 @@
 # GitIntegrationProject for IntelliJ IDEA
 This project contains content using which you can connect to GIT API and you can access discussions done on any merge request.
 
-##Introduction
+## Introduction
 This project is meant to ease the process with which the developers can directly access the discussions done on any 
 merge request of any branch on their project by the reviewers.
 
