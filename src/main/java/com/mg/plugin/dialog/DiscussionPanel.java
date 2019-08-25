@@ -55,8 +55,10 @@ public class DiscussionPanel {
 
     private void addListActionListener(JList<String> discussionsJList) {
         discussionsJList.addListSelectionListener(l -> {
-                    VirtualFile file = LocalFileSystem.getInstance().findFileByPath(getFilePathToNavigate(discussionsJList));
-                    new OpenFileDescriptor(GitMRDialog.project, file, getLogicalLine(discussionsJList), 0).navigate(true);
+                    if (!discussionsJList.getSelectedValue().contains("There is no discussion done on this merge request")) {
+                        VirtualFile file = LocalFileSystem.getInstance().findFileByPath(getFilePathToNavigate(discussionsJList));
+                        new OpenFileDescriptor(GitMRDialog.project, file, getLogicalLine(discussionsJList), 0).navigate(true);
+                    }
                 }
         );
     }
