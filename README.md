@@ -13,8 +13,10 @@ Second, as of now, you will have to manually resolve the comment into GIT and on
 see the discussions in the list.
 
 ## How to use
-Just unzip the provided zip file from the repository in to the following path:
-
+Just unzip the provided zip file from the repository releases in to the following path:
+```text 
+https://github.com/Inculator/GitIntegrationProject/releases/tag/1.x
+```
 ```properties
 C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2019.1.3\plugins\
 ```
