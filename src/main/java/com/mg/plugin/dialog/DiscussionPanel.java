@@ -4,6 +4,7 @@ import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.mg.git.merge.MergeRequestModel;
+import com.mg.mergerequest.GitLabDiscussionsModel;
 import com.mg.mergerequest.GitLabUserNotesModel;
 import com.mg.plugin.ProvideSwingComponentsUtilsKt;
 import org.jetbrains.annotations.NotNull;
@@ -19,8 +20,8 @@ public class DiscussionPanel {
     private String selectedValue;
     private List<MergeRequestModel> myMergeRequestModelList;
     private JPanel panelWrapper;
-    private DefaultListModel<String> discussionModelList;
-    private List<GitLabUserNotesModel> gitLabUserNotesModelList;
+    private DefaultListModel<GitLabUserNotesModel> discussionModelList;
+    private List<GitLabDiscussionsModel> gitLabUserDiscussionsModelList;
 
     public DiscussionPanel(JPanel panelWrapper, String selectedValue, List<MergeRequestModel> myMergeRequestModelList) {
         this.panelWrapper = panelWrapper;
@@ -32,7 +33,7 @@ public class DiscussionPanel {
                 userRemovalComponent.add(comp);
         userRemovalComponent.forEach(comp -> panelWrapper.remove(comp));
         discussionModelList = new DefaultListModel<>();
-        gitLabUserNotesModelList = new ArrayList<>();
+        gitLabUserDiscussionsModelList = new ArrayList<>();
         panelWrapper.updateUI();
     }
 
@@ -40,11 +41,14 @@ public class DiscussionPanel {
         Optional<MergeRequestModel> mergeRequestModelOptional =
                 myMergeRequestModelList.stream().filter(model -> model.getMergeRequest().getTitle().equalsIgnoreCase(selectedValue)).findFirst();
         if (mergeRequestModelOptional.isPresent())
-            gitLabUserNotesModelList = mergeRequestModelOptional.get().getListOfMRDiscussions();
-        if (!gitLabUserNotesModelList.isEmpty())
-            gitLabUserNotesModelList.forEach(ele -> discussionModelList.addElement(ele.getBody() + " : File -> " + ele.getPosition().getOld_path()));
-        else
-            discussionModelList.addElement("There is no discussion done on this merge request yet !!");
+            gitLabUserDiscussionsModelList = mergeRequestModelOptional.get().getListOfMRDiscussions();
+        if (!gitLabUserDiscussionsModelList.isEmpty())
+            gitLabUserDiscussionsModelList.forEach(ele -> ele.getNotes().forEach(note -> discussionModelList.addElement(note)));
+        else {
+            GitLabUserNotesModel model = new GitLabUserNotesModel();
+            model.setBody("There is no discussion done on this merge request yet !!");
+            discussionModelList.addElement(model);
+        }
         final JLabel discussionLabel = makeJLabel();
         final JList discussionsJList = makeJListForDiscussion();
         addListActionListener(discussionsJList);
@@ -53,9 +57,9 @@ public class DiscussionPanel {
         panelWrapper.updateUI();
     }
 
-    private void addListActionListener(JList<String> discussionsJList) {
+    private void addListActionListener(JList<GitLabUserNotesModel> discussionsJList) {
         discussionsJList.addListSelectionListener(l -> {
-                    if (!discussionsJList.getSelectedValue().contains("There is no discussion done on this merge request")) {
+                    if (!discussionsJList.getSelectedValue().getBody().contains("There is no discussion done on this merge request")) {
                         VirtualFile file = LocalFileSystem.getInstance().findFileByPath(getFilePathToNavigate(discussionsJList));
                         new OpenFileDescriptor(GitMRDialog.project, file, getLogicalLine(discussionsJList), 0).navigate(true);
                     }
@@ -63,13 +67,13 @@ public class DiscussionPanel {
         );
     }
 
-    private Integer getLogicalLine(JList<String> discussionsJList) {
-        return Integer.parseInt(gitLabUserNotesModelList.get(discussionsJList.getSelectedIndex()).getPosition().getNew_line());
+    private Integer getLogicalLine(JList<GitLabUserNotesModel> discussionsJList) {
+        return Integer.parseInt(discussionModelList.get(discussionsJList.getSelectedIndex()).getPosition().getNew_line());
     }
 
     @NotNull
-    private String getFilePathToNavigate(JList<String> discussionsJList) {
-        return GitMRDialog.project.getBasePath() + "/" + gitLabUserNotesModelList.get(discussionsJList.getSelectedIndex()).getPosition().getNew_path();
+    private String getFilePathToNavigate(JList<GitLabUserNotesModel> discussionsJList) {
+        return GitMRDialog.project.getBasePath() + "/" + discussionModelList.get(discussionsJList.getSelectedIndex()).getPosition().getNew_path();
     }
 
     @NotNull
@@ -78,6 +82,11 @@ public class DiscussionPanel {
     }
 
     private JList makeJListForDiscussion() {
-        return ProvideSwingComponentsUtilsKt.makeJListComponent(discussionModelList, "DiscussionList");
+        JList<GitLabUserNotesModel> jList = new JList<>(discussionModelList);
+        jList.setVisibleRowCount(4);
+        jList.setFixedCellHeight(20);
+        jList.setFixedCellWidth(600);
+        jList.setName("DiscussionList");
+        return jList;
     }
 }

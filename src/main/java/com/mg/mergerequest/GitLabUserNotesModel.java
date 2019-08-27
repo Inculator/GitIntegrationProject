@@ -96,4 +96,14 @@ public class GitLabUserNotesModel {
     public void setResolved(boolean resolved) {
         this.resolved = resolved;
     }
+
+    @Override
+    public String toString() {
+        StringBuffer s = new StringBuffer();
+        if (getBody() != null)
+            s.append(getBody());
+        if (position != null)
+            s.append(" -> " + position.getNew_path());
+        return s.toString();
+    }
 }

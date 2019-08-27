@@ -2,6 +2,8 @@ package com.mg.plugin.action.impl;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.util.WaitForProgressToShow;
 import com.mg.plugin.dialog.GitMRDialog;
 
 public class MergeRequestPlugin extends AnAction {
