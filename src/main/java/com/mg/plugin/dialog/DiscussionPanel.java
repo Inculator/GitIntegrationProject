@@ -38,26 +38,30 @@ public class DiscussionPanel {
     }
 
     public void createDiscussionPanel() {
+        final JLabel discussionLabel = makeJLabel();
+        panelWrapper.add(discussionLabel);
         Optional<MergeRequestModel> mergeRequestModelOptional =
                 myMergeRequestModelList.stream().filter(model -> model.getMergeRequest().getTitle().equalsIgnoreCase(selectedValue)).findFirst();
-        if (mergeRequestModelOptional.isPresent())
+        if (mergeRequestModelOptional.isPresent()) {
             gitLabUserDiscussionsModelList = mergeRequestModelOptional.get().getListOfMRDiscussions();
-        if (!gitLabUserDiscussionsModelList.isEmpty())
-            gitLabUserDiscussionsModelList.forEach(ele -> ele.getNotes().forEach(note -> discussionModelList.addElement(note)));
-        else {
-            GitLabUserNotesModel model = new GitLabUserNotesModel();
-            model.setBody("There is no discussion done on this merge request yet !!");
-            discussionModelList.addElement(model);
         }
-        final JLabel discussionLabel = makeJLabel();
-        final JList discussionsJList = makeJListForDiscussion();
-        addListActionListener(discussionsJList);
-        panelWrapper.add(discussionLabel);
-        panelWrapper.add(discussionsJList);
+        if (!gitLabUserDiscussionsModelList.isEmpty()) {
+            TestTableDialog.addComponent(panelWrapper, gitLabUserDiscussionsModelList.get(0).getNotes());
+        }
+//            gitLabUserDiscussionsModelList.forEach(ele -> ele.getNotes().forEach(note -> discussionModelList.addElement(note)));
+        else {
+            /*GitLabUserNotesModel model = new GitLabUserNotesModel();
+            model.setBody("There is no discussion done on this merge request yet !!");
+            discussionModelList.addElement(model);*/
+            panelWrapper.add(new JLabel("There is no discussion on this merge request !!!"));
+        }
+//        final JList discussionsJList = makeJListForDiscussion();
+//        addListActionListener(discussionsJList);
+//        panelWrapper.add(discussionsJList);
         panelWrapper.updateUI();
     }
 
-    private void addListActionListener(JList<GitLabUserNotesModel> discussionsJList) {
+  /*  private void addListActionListener(JList<GitLabUserNotesModel> discussionsJList) {
         discussionsJList.addListSelectionListener(l -> {
                     if (!discussionsJList.getSelectedValue().getBody().contains("There is no discussion done on this merge request")) {
                         VirtualFile file = LocalFileSystem.getInstance().findFileByPath(getFilePathToNavigate(discussionsJList));
@@ -74,19 +78,19 @@ public class DiscussionPanel {
     @NotNull
     private String getFilePathToNavigate(JList<GitLabUserNotesModel> discussionsJList) {
         return GitMRDialog.project.getBasePath() + "/" + discussionModelList.get(discussionsJList.getSelectedIndex()).getPosition().getNew_path();
-    }
+    }*/
 
     @NotNull
     private JLabel makeJLabel() {
         return ProvideSwingComponentsUtilsKt.makeJLabelComponent("Discussions on Merge Request", "DiscussionLabel");
     }
 
-    private JList makeJListForDiscussion() {
+   /* private JList makeJListForDiscussion() {
         JList<GitLabUserNotesModel> jList = new JList<>(discussionModelList);
         jList.setVisibleRowCount(4);
         jList.setFixedCellHeight(20);
         jList.setFixedCellWidth(600);
         jList.setName("DiscussionList");
         return jList;
-    }
+    }*/
 }
