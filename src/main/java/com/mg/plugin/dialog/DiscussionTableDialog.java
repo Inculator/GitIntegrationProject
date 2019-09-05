@@ -19,15 +19,16 @@ public class DiscussionTableDialog {
 
         ArrayList<Integer> sizeOfNotes = new ArrayList<>();
         discussionList.forEach(discussion -> sizeOfNotes.add(discussion.getNotes().size()));
-        Object[][] data = new Object[sizeOfNotes.size()][];
-        Integer countOfNotes = 0;
+        Integer countOfNotes = sizeOfNotes.stream().reduce(0, Integer::sum);
+        Object[][] data = new Object[countOfNotes][];
+        Integer counterForNotes = 0;
 
         for (int i = 0; i < discussionList.size(); i++) {
             for(int j = 0; j < discussionList.get(i).getNotes().size(); j++) {
                 Object discussion = discussionList.get(i).getNotes().get(j);
                 Object position = discussionList.get(i).getNotes().get(j).getPosition();
                 Object[] o = {discussion, position, button};
-                data[countOfNotes++] = o;
+                data[counterForNotes++] = o;
             }
         }
 
