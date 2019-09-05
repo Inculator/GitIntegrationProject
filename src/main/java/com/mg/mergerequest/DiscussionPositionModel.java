@@ -39,4 +39,10 @@ public class DiscussionPositionModel {
     public void setNew_line(String new_line) {
         this.new_line = new_line;
     }
+
+    @Override
+    public String toString() {
+        String[] fileName = new_path.split("/");
+        return fileName[fileName.length-1];
+    }
 }

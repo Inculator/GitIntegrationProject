@@ -25,7 +25,7 @@ public class DiscussionPanel {
         this.myMergeRequestModelList = myMergeRequestModelList;
         List<Component> userRemovalComponent = new ArrayList<>();
         for (Component comp : panelWrapper.getComponents())
-            if ("DiscussionList".equalsIgnoreCase(comp.getName()) || "DiscussionLabel".equalsIgnoreCase(comp.getName()))
+            if ("DiscussionPanelTable".equalsIgnoreCase(comp.getName()) || "DiscussionLabel".equalsIgnoreCase(comp.getName()))
                 userRemovalComponent.add(comp);
         userRemovalComponent.forEach(comp -> panelWrapper.remove(comp));
         gitLabUserDiscussionsModelList = new ArrayList<>();

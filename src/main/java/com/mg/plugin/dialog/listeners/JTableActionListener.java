@@ -33,6 +33,6 @@ public class JTableActionListener {
     }
 
     private Integer getLogicalLine(GitLabUserNotesModel model) {
-        return Integer.parseInt(GitMRDialog.project.getBasePath() + "/" + model.getPosition().getNew_line());
+        return Integer.parseInt(model.getPosition().getNew_line());
     }
 }
