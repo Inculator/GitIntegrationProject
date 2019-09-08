@@ -7,7 +7,7 @@ import com.intellij.openapi.ui.messages.MessageDialog;
 import com.mg.git.merge.MergeRequestModel;
 import com.mg.git.utils.GitConnectionUtils;
 import com.mg.git.utils.HostURLModel;
-import com.mg.mergerequest.TestMainMerges;
+import com.mg.mergerequest.GitLabMergeRequestController;
 import com.mg.plugin.ProvideSwingComponentsUtilsKt;
 
 import javax.swing.*;
@@ -31,8 +31,8 @@ public class GitMRDialog extends MessageDialog {
         super.createCenterPanel();
         panelWrapperCreator = new PanelWrapperCreator();
         HostURLModel hostURLModel = getHostURLModel();
-        myMergeRequestModelList = new TestMainMerges().
-                gitLabMergeRequestsController(hostURLModel.getHost(), hostURLModel.getAlias(), hostURLModel.getProjectName(), System.getenv("ENV_GIT_TOKEN"));
+        myMergeRequestModelList = new GitLabMergeRequestController().
+                getMergeRequests(hostURLModel.getHost(), hostURLModel.getAlias(), hostURLModel.getProjectName(), System.getenv("ENV_GIT_TOKEN"));
         addComponentsToPanel();
         return panelWrapperCreator.getPanelWrapper();
     }
@@ -69,7 +69,7 @@ public class GitMRDialog extends MessageDialog {
         if (repoOptional.isPresent()) {
             myRepo = repoOptional.get();
             currentBranch = myRepo.getCurrentBranchName();
-            return GitConnectionUtils.Companion.consultGitURL(myRepo.getVcs().getProject().getBasePath());
+            return GitConnectionUtils.Companion.consultProjectGitURL(myRepo.getVcs().getProject().getBasePath());
         }
         return new HostURLModel("", "", "");
     }

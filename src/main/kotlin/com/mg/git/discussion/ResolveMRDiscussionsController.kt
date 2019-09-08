@@ -1,6 +1,6 @@
 package com.mg.git.discussion
 
-import com.mg.git.connection.MakeGitConnection
+import com.mg.git.connection.GitConnectionProvider
 import com.mg.mergerequest.GitLabDiscussionsModel
 import org.gitlab.api.Pagination
 import org.gitlab.api.http.GitlabHTTPRequestor
@@ -20,7 +20,7 @@ class ResolveMRDiscussionsController {
         val tailUrl = GitlabProject.URL + "/" + mergeRequest.projectId +
                 GitlabMergeRequest.URL + "/" + mergeRequest.iid +
                 GitLabDiscussionsModel.URL + "/" + discussionId + Pagination().withPerPage(Pagination.MAX_ITEMS_PER_PAGE).toString() + resolved + resolveFlag
-        var httpRequestor: GitlabHTTPRequestor = MakeGitConnection.gitlabAPI.retrieve()
+        var httpRequestor: GitlabHTTPRequestor = GitConnectionProvider.gitlabAPI.retrieve()
         httpRequestor = httpRequestor.method("PUT")
         var model: GitLabDiscussionsModel? = httpRequestor.to(tailUrl, GitLabDiscussionsModel::class.java)
         return model?.notes?.get(0)?.isResolved!!

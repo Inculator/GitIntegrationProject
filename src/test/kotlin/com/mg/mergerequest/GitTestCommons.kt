@@ -1,7 +1,6 @@
 package com.mg.mergerequest
 
-import com.mg.git.connection.ConnectionGitlabAPI
-import com.mg.git.connection.MakeGitConnection
+import com.mg.git.connection.GitConnectionProvider
 import org.junit.jupiter.api.BeforeAll
 
 open class GitTestCommons {
@@ -14,8 +13,9 @@ open class GitTestCommons {
             val token = System.getenv("ENV_GIT_TOKEN")
             val nameSpace = "t-tool"
             val projectName = "t-tool"
-            MakeGitConnection.getGitConnectionInstance(hostUrl, token)
-            projectId = ConnectionGitlabAPI.getProjectId(nameSpace, projectName)
+            GitConnectionProvider.getGitConnectionInstance(hostUrl, token)
+            GitConnectionProvider.fetchProjectId(nameSpace, projectName)
+            projectId = GitConnectionProvider.projectId
         }
     }
 }

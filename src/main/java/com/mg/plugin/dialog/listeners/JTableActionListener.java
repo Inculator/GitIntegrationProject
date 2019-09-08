@@ -3,7 +3,7 @@ package com.mg.plugin.dialog.listeners;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.mg.git.connection.ConnectionGitlabAPI;
+import com.mg.git.connection.GitConnectionProvider;
 import com.mg.git.discussion.ResolveMRDiscussionsController;
 import com.mg.git.merge.MergeRequestModel;
 import com.mg.mergerequest.GitLabUserNotesModel;
@@ -62,7 +62,7 @@ public class JTableActionListener {
     }
 
     private void resolveDiscussion(Object discussionInstance) {
-        Integer projectId = ConnectionGitlabAPI.Companion.getProjectId();
+        Integer projectId = GitConnectionProvider.projectId;
         Boolean isResolved = new ResolveMRDiscussionsController().resolveDiscussion(((GitLabUserNotesModel) discussionInstance).getDiscussionId(), projectId, mergeRequestModel.getMergeRequest(), true);
         if (Boolean.TRUE.equals(isResolved)) gitMRDialog.getDisposable().dispose();
     }

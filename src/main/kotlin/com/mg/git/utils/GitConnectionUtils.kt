@@ -12,7 +12,7 @@ class GitConnectionUtils {
         @kotlin.jvm.JvmStatic
         var hostURL: String = ""
 
-        fun consultGitURL(url: String?): HostURLModel {
+        fun consultProjectGitURL(url: String?): HostURLModel {
             var url1 = url + File.separator + ".git"
             val files = File(url1).listFiles()
             for (file in files) {
@@ -25,7 +25,7 @@ class GitConnectionUtils {
             return retrieveHost()
         }
         
-        fun retrieveHost() : HostURLModel {
+        private fun retrieveHost() : HostURLModel {
             val url = URL(hostURL)
             val pathParam = url.path.split('/')
             val alias = pathParam[1]
