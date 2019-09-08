@@ -64,7 +64,7 @@ public class JTableActionListener {
     private void resolveDiscussion(Object discussionInstance) {
         Integer projectId = ConnectionGitlabAPI.Companion.getProjectId();
         Boolean isResolved = new ResolveMRDiscussionsController().resolveDiscussion(((GitLabUserNotesModel) discussionInstance).getDiscussionId(), projectId, mergeRequestModel.getMergeRequest(), true);
-        if (isResolved) gitMRDialog.getDisposable().dispose();
+        if (Boolean.TRUE.equals(isResolved)) gitMRDialog.getDisposable().dispose();
     }
 
     private void openFileWithComment(JTable table, Integer selectedRow) {

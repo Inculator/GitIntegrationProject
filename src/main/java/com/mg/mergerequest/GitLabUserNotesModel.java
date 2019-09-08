@@ -117,9 +117,8 @@ public class GitLabUserNotesModel {
 
     @Override
     public String toString() {
-        StringBuffer s = new StringBuffer();
         if (getBody() != null)
-            s.append(getBody());
-        return s.toString();
+            return getBody();
+        return "";
     }
 }

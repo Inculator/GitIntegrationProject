@@ -22,8 +22,6 @@ public class GitMRDialog extends MessageDialog {
     private String currentBranch = "master";
     public static Project project;
     private List<MergeRequestModel> myMergeRequestModelList;
-    private List<MergeRequestModel> myMergeRequestModelListForCurrentBranch;
-
     public GitMRDialog(boolean canBeParent) {
         super(project, "Merge Request Handler", "Merge Requests", optionsUser, 1, null, canBeParent);
     }
@@ -40,7 +38,7 @@ public class GitMRDialog extends MessageDialog {
     }
 
     private void addComponentsToPanel() {
-        myMergeRequestModelListForCurrentBranch = myMergeRequestModelList.stream().filter(mergeRequestModel -> mergeRequestModel.getMergeRequest().getSourceBranch().equalsIgnoreCase(currentBranch))
+        List<MergeRequestModel> myMergeRequestModelListForCurrentBranch = myMergeRequestModelList.stream().filter(mergeRequestModel -> mergeRequestModel.getMergeRequest().getSourceBranch().equalsIgnoreCase(currentBranch))
                 .collect(Collectors.toList());
 
         if (myMergeRequestModelListForCurrentBranch.isEmpty())

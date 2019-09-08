@@ -17,30 +17,28 @@ import java.util.List;
 public class DiscussionTableDialog {
 
     private MergeRequestModel mergeRequestModel;
-    private JPanel panel;
     private GitMRDialog gitMRDialog;
 
     public void addComponent(JPanel panel, List<GitLabDiscussionsModel> discussionList, MergeRequestModel mergeRequestModelOptional, GitMRDialog gitMRDialog) {
-        this.panel = panel;
         JButton button = new JButton("Resolve Discussion");
         Object[] columnNames = {"Comment", "File", "Resolve"};
         mergeRequestModel = mergeRequestModelOptional;
         this.gitMRDialog = gitMRDialog;
         List<GitLabUserNotesModel> notesList = new ArrayList<>();
 
-        discussionList.forEach(discussion -> {
+        discussionList.forEach(discussion ->
             discussion.getNotes().forEach(note -> {
                 if (note.isResolvable())
                     notesList.add(note);
-            });
-        });
+            })
+        );
 
         Object[][] data = new Object[notesList.size()][];
         Integer counterForNotes = 0;
 
         for (int i = 0; i < discussionList.size(); i++) {
             for (int j = 0; j < discussionList.get(i).getNotes().size(); j++) {
-                if (discussionList.get(i).getNotes().get(j).isResolvable() == true) {
+                if (discussionList.get(i).getNotes().get(j).isResolvable()) {
                     Object discussionNotes = discussionList.get(i).getNotes().get(j);
                     Object position = discussionList.get(i).getNotes().get(j).getPosition();
                     Object[] o = {discussionNotes, position, button};
