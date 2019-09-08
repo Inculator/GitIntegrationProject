@@ -2,7 +2,6 @@ package com.mg.plugin.dialog;
 
 import com.mg.git.merge.MergeRequestModel;
 import com.mg.mergerequest.GitLabDiscussionsModel;
-import com.mg.mergerequest.GitLabUserNotesModel;
 import com.mg.plugin.ProvideSwingComponentsUtilsKt;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,11 +17,13 @@ public class DiscussionPanel {
     private List<MergeRequestModel> myMergeRequestModelList;
     private JPanel panelWrapper;
     private List<GitLabDiscussionsModel> gitLabUserDiscussionsModelList;
+    private GitMRDialog gitMRDialog;
 
-    public DiscussionPanel(JPanel panelWrapper, String selectedValue, List<MergeRequestModel> myMergeRequestModelList) {
+    public DiscussionPanel(JPanel panelWrapper, String selectedValue, List<MergeRequestModel> myMergeRequestModelList, GitMRDialog gitMRDialog) {
         this.panelWrapper = panelWrapper;
         this.selectedValue = selectedValue;
         this.myMergeRequestModelList = myMergeRequestModelList;
+        this.gitMRDialog = gitMRDialog;
         List<Component> userRemovalComponent = new ArrayList<>();
         for (Component comp : panelWrapper.getComponents())
             if ("DiscussionPanelTable".equalsIgnoreCase(comp.getName()) || "DiscussionLabel".equalsIgnoreCase(comp.getName()))
@@ -40,7 +41,7 @@ public class DiscussionPanel {
         if (mergeRequestModelOptional.isPresent()) {
             gitLabUserDiscussionsModelList = mergeRequestModelOptional.get().getListOfMRDiscussions();
             if (!gitLabUserDiscussionsModelList.isEmpty())
-                new DiscussionTableDialog().addComponent(panelWrapper, gitLabUserDiscussionsModelList);
+                new DiscussionTableDialog().addComponent(panelWrapper, gitLabUserDiscussionsModelList, mergeRequestModelOptional.get(), gitMRDialog);
             else
                 panelWrapper.add(new JLabel("There is no discussion on this merge request !!!"));
         }

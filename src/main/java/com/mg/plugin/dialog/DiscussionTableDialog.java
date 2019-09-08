@@ -1,34 +1,51 @@
 package com.mg.plugin.dialog;
 
 import com.intellij.ui.table.JBTable;
+import com.mg.git.merge.MergeRequestModel;
 import com.mg.mergerequest.GitLabDiscussionsModel;
+import com.mg.mergerequest.GitLabUserNotesModel;
 import com.mg.plugin.dialog.listeners.ButtonRenderer;
 import com.mg.plugin.dialog.listeners.JTableActionListener;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DiscussionTableDialog {
 
-    public void addComponent(JPanel panel, List<GitLabDiscussionsModel> discussionList) {
+    private MergeRequestModel mergeRequestModel;
+    private JPanel panel;
+    private GitMRDialog gitMRDialog;
+
+    public void addComponent(JPanel panel, List<GitLabDiscussionsModel> discussionList, MergeRequestModel mergeRequestModelOptional, GitMRDialog gitMRDialog) {
+        this.panel = panel;
         JButton button = new JButton("Resolve Discussion");
         Object[] columnNames = {"Comment", "File", "Resolve"};
+        mergeRequestModel = mergeRequestModelOptional;
+        this.gitMRDialog = gitMRDialog;
+        List<GitLabUserNotesModel> notesList = new ArrayList<>();
 
-        ArrayList<Integer> sizeOfNotes = new ArrayList<>();
-        discussionList.forEach(discussion -> sizeOfNotes.add(discussion.getNotes().size()));
-        Integer countOfNotes = sizeOfNotes.stream().reduce(0, Integer::sum);
-        Object[][] data = new Object[countOfNotes][];
+        discussionList.forEach(discussion -> {
+            discussion.getNotes().forEach(note -> {
+                if (note.isResolvable())
+                    notesList.add(note);
+            });
+        });
+
+        Object[][] data = new Object[notesList.size()][];
         Integer counterForNotes = 0;
 
         for (int i = 0; i < discussionList.size(); i++) {
-            for(int j = 0; j < discussionList.get(i).getNotes().size(); j++) {
-                Object discussion = discussionList.get(i).getNotes().get(j);
-                Object position = discussionList.get(i).getNotes().get(j).getPosition();
-                Object[] o = {discussion, position, button};
-                data[counterForNotes++] = o;
+            for (int j = 0; j < discussionList.get(i).getNotes().size(); j++) {
+                if (discussionList.get(i).getNotes().get(j).isResolvable() == true) {
+                    Object discussionNotes = discussionList.get(i).getNotes().get(j);
+                    Object position = discussionList.get(i).getNotes().get(j).getPosition();
+                    Object[] o = {discussionNotes, position, button};
+                    data[counterForNotes++] = o;
+                }
             }
         }
 
@@ -47,7 +64,8 @@ public class DiscussionTableDialog {
         table.setName("DiscussionPanelTable");
         table.getColumn("Resolve").setCellRenderer(new ButtonRenderer());
         table.setAutoResizeMode(4);
-        new JTableActionListener().addActionListener(table);
+        table.setRowSelectionAllowed(false);
+        new JTableActionListener().addActionListener(table, mergeRequestModel, gitMRDialog);
         return table;
     }
 }

@@ -6,6 +6,7 @@ public class GitLabUserNotesModel {
 
     public static final String URL = "/notes";
 
+    private String discussionId;
     private Integer id;
     private String body;
     private String attachment;
@@ -14,6 +15,7 @@ public class GitLabUserNotesModel {
     private boolean upvote;
     private boolean downvote;
     private String type;
+    private boolean resolvable;
     private boolean resolved;
     private DiscussionPositionModel position;
 
@@ -95,6 +97,22 @@ public class GitLabUserNotesModel {
 
     public void setResolved(boolean resolved) {
         this.resolved = resolved;
+    }
+
+    public boolean isResolvable() {
+        return resolvable;
+    }
+
+    public void setResolvable(boolean resolvable) {
+        this.resolvable = resolvable;
+    }
+
+    public String getDiscussionId() {
+        return discussionId;
+    }
+
+    public void setDiscussionId(String discussionId) {
+        this.discussionId = discussionId;
     }
 
     @Override

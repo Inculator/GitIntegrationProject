@@ -22,6 +22,11 @@ fun getMRDiscussions(mergeRequest: GitlabMergeRequest): List<GitLabDiscussionsMo
     val tailUrl = GitlabProject.URL + "/" + mergeRequest.projectId +
             GitlabMergeRequest.URL + "/" + mergeRequest.iid +
             GitLabDiscussionsModel.URL + Pagination().withPerPage(Pagination.MAX_ITEMS_PER_PAGE).toString()
-    return MakeGitConnection.gitlabAPI.retrieve().getAll(tailUrl, Array<GitLabDiscussionsModel>::class.java)
+
+    var listOfGitLabDiscussionsModel = MakeGitConnection.gitlabAPI.retrieve()
+        .getAll(tailUrl, Array<GitLabDiscussionsModel>::class.java)
         .filter { models -> models.notes.get(0).type == "DiffNote" && !models.notes.get(0).isResolved }
+
+    listOfGitLabDiscussionsModel.forEach { model-> model.notes.forEach { note-> note.discussionId = model.id }}
+    return listOfGitLabDiscussionsModel
 }

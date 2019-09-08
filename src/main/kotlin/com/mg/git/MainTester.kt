@@ -1,7 +1,7 @@
 package com.mg.git
 
+import com.mg.git.connection.ConnectionGitlabAPI
 import com.mg.git.connection.MakeGitConnection
-import com.mg.git.connection.getProjectId
 import com.mg.git.discussion.gitLabMergeRequests
 import com.mg.git.merge.getMergeRequests
 
@@ -13,7 +13,7 @@ val projectName = "t-tool"
 
 fun main() {
     MakeGitConnection.getGitConnectionInstance(hostUrl, token)
-    projectId = getProjectId(nameSpace, projectName)
+    projectId = ConnectionGitlabAPI.getProjectId(nameSpace, projectName)
 
     var listOfMergeRequest = getMergeRequests(projectId)
     var listOfMergeRequestsModels = gitLabMergeRequests(listOfMergeRequest)

@@ -1,7 +1,7 @@
 package com.mg.mergerequest
 
+import com.mg.git.connection.ConnectionGitlabAPI
 import com.mg.git.connection.MakeGitConnection
-import com.mg.git.connection.getProjectId
 import com.mg.git.discussion.gitLabMergeRequests
 import com.mg.git.merge.MergeRequestModel
 import com.mg.git.merge.getMergeRequests
@@ -17,7 +17,7 @@ class TestMainMerges {
         token: String
     ): ArrayList<MergeRequestModel> {
         MakeGitConnection.getGitConnectionInstance(hostUrl, token)
-        projectId = getProjectId(nameSpace, projectName)
+        projectId = ConnectionGitlabAPI.getProjectId(nameSpace, projectName)
         var listOfMergeRequest = getMergeRequests(projectId)
         var listOfMergeRequestsModels = gitLabMergeRequests(listOfMergeRequest)
         return listOfMergeRequestsModels

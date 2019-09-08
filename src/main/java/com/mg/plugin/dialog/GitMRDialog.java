@@ -59,7 +59,7 @@ public class GitMRDialog extends MessageDialog {
 
     private void addListActionListener(JList<String> mergeRequestsList) {
         mergeRequestsList.addListSelectionListener(l ->
-                new DiscussionPanel(panelWrapperCreator.getPanelWrapper(), mergeRequestsList.getSelectedValue(), myMergeRequestModelList)
+                new DiscussionPanel(panelWrapperCreator.getPanelWrapper(), mergeRequestsList.getSelectedValue(), myMergeRequestModelList, this)
                         .createDiscussionPanel()
         );
     }
