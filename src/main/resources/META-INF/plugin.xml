@@ -1,22 +1,14 @@
 <idea-plugin>
     <id>GitIntegrationProject.MGGitIntegration.GitIntegrationProject</id>
-    <name>GitPlugin</name>
-    <vendor email="mohakgupta.2012@gmail.com" url="">MYOwnCompany</vendor>
+    <name>GITMergeRequestPlugin</name>
+    <vendor email="mohakgupta.2012@gmail.com" url="">Inculators</vendor>
 
-    <description>This is my plugin designed for my own MR handling</description>
-
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
-    <!-- uncomment to enable plugin in all products
-    <depends>com.intellij.modules.lang</depends>
-    -->
+    <description>This is my plugin designed for handling Merge Request discussions on GITLAB projects</description>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
     </extensions>
 
     <actions>
-        <!-- Add your actions here -->
         <action id="GitIntegrationProject" class="com.mg.plugin.action.impl.MergeRequestPlugin"
                 text="MergeRequestPlugin" description="MergeRequestPlugin">
             <add-to-group group-id="VcsGroups" anchor="last"/>
