@@ -4,16 +4,16 @@ import com.intellij.dvcs.repo.Repository;
 import com.intellij.dvcs.repo.VcsRepositoryManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.messages.MessageDialog;
-import com.mg.git.merge.MergeRequestModel;
+import com.mg.git.provider.GitIntegrationProvider;
 import com.mg.git.utils.GitConnectionUtils;
 import com.mg.git.utils.HostURLModel;
-import com.mg.mergerequest.GitLabMergeRequestController;
+import com.mg.git.provider.GitLabMergeRequestProvider;
 import com.mg.plugin.ProvideSwingComponentsUtilsKt;
+import org.gitlab.api.models.GitlabMergeRequest;
 
 import javax.swing.*;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class GitMRDialog extends MessageDialog {
 
@@ -21,7 +21,9 @@ public class GitMRDialog extends MessageDialog {
     private static String[] optionsUser = {};
     private String currentBranch = "master";
     public static Project project;
-    private List<MergeRequestModel> myMergeRequestModelList;
+    private List<GitlabMergeRequest> gitlabMergeRequests;
+    private GitIntegrationProvider gitLabMergeRequestController;
+
     public GitMRDialog(boolean canBeParent) {
         super(project, "Merge Request Handler", "Merge Requests", optionsUser, 1, null, canBeParent);
     }
@@ -30,34 +32,33 @@ public class GitMRDialog extends MessageDialog {
     protected JComponent createCenterPanel() {
         super.createCenterPanel();
         panelWrapperCreator = new PanelWrapperCreator();
+        gitLabMergeRequestController = new GitLabMergeRequestProvider();
         HostURLModel hostURLModel = getHostURLModel();
-        myMergeRequestModelList = new GitLabMergeRequestController().
-                getMergeRequests(hostURLModel.getHost(), hostURLModel.getAlias(), hostURLModel.getProjectName(), System.getenv("ENV_GIT_TOKEN"));
+        gitLabMergeRequestController.initializeGitConnection(hostURLModel.getHost(), hostURLModel.getAlias(), hostURLModel.getProjectName(), System.getenv("ENV_GIT_TOKEN"));
+        gitlabMergeRequests = gitLabMergeRequestController.getAllMergeRequests();
         addComponentsToPanel();
         return panelWrapperCreator.getPanelWrapper();
     }
 
     private void addComponentsToPanel() {
-        List<MergeRequestModel> myMergeRequestModelListForCurrentBranch = myMergeRequestModelList.stream().filter(mergeRequestModel -> mergeRequestModel.getMergeRequest().getSourceBranch().equalsIgnoreCase(currentBranch))
-                .collect(Collectors.toList());
+        Optional<GitlabMergeRequest> mergeRequestForSelectedBranch = gitlabMergeRequests.stream().filter(mergeRequest -> mergeRequest.getSourceBranch().equalsIgnoreCase(currentBranch)).findFirst();
 
-        if (myMergeRequestModelListForCurrentBranch.isEmpty())
+        if (!mergeRequestForSelectedBranch.isPresent())
             panelWrapperCreator.addComponentToPanelWrapper(ProvideSwingComponentsUtilsKt.makeJLabelComponent("No Merge Request for branch : " + currentBranch, ""));
-        else
-            myMergeRequestModelListForCurrentBranch.forEach(mergeRequestModel -> {
-                final DefaultListModel<String> l1 = new DefaultListModel<>();
-                l1.addElement(mergeRequestModel.getMergeRequest().getTitle());
-                final JList<String> mergeRequestsJList = ProvideSwingComponentsUtilsKt.makeJListComponent(l1, "");
-                addListActionListener(mergeRequestsJList);
-                ProvideSwingComponentsUtilsKt.makeJLabelComponent(" Merge Requests ", "");
-                panelWrapperCreator.addComponentToPanelWrapper(ProvideSwingComponentsUtilsKt.makeJLabelComponent(" Merge Requests ", ""));
-                panelWrapperCreator.addComponentToPanelWrapper(mergeRequestsJList);
-            });
+        else {
+            final DefaultListModel<String> mergeRequestModelJList = new DefaultListModel<>();
+            mergeRequestModelJList.addElement(mergeRequestForSelectedBranch.get().getTitle());
+            final JList<String> mergeRequestsJList = ProvideSwingComponentsUtilsKt.makeJListComponent(mergeRequestModelJList, "");
+            addListActionListener(mergeRequestsJList, mergeRequestForSelectedBranch.get());
+            ProvideSwingComponentsUtilsKt.makeJLabelComponent(" Merge Requests ", "");
+            panelWrapperCreator.addComponentToPanelWrapper(ProvideSwingComponentsUtilsKt.makeJLabelComponent(" Merge Requests ", ""));
+            panelWrapperCreator.addComponentToPanelWrapper(mergeRequestsJList);
+        }
     }
 
-    private void addListActionListener(JList<String> mergeRequestsList) {
+    private void addListActionListener(JList<String> mergeRequestsList, GitlabMergeRequest mergeRequestForSelectedBranch) {
         mergeRequestsList.addListSelectionListener(l ->
-                new DiscussionPanel(panelWrapperCreator.getPanelWrapper(), mergeRequestsList.getSelectedValue(), myMergeRequestModelList, this)
+                new DiscussionPanel(panelWrapperCreator.getPanelWrapper(), mergeRequestsList.getSelectedValue(), mergeRequestForSelectedBranch, this)
                         .createDiscussionPanel()
         );
     }

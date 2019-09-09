@@ -13,7 +13,7 @@ open class GitTestCommons {
             val token = System.getenv("ENV_GIT_TOKEN")
             val nameSpace = "t-tool"
             val projectName = "t-tool"
-            GitConnectionProvider.getGitConnectionInstance(hostUrl, token)
+            GitConnectionProvider.createGitConnectionInstance(hostUrl, token)
             GitConnectionProvider.fetchProjectId(nameSpace, projectName)
             projectId = GitConnectionProvider.projectId
         }

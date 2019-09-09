@@ -19,12 +19,13 @@ public class DiscussionTableDialog {
     private MergeRequestModel mergeRequestModel;
     private GitMRDialog gitMRDialog;
 
-    public void addComponent(JPanel panel, List<GitLabDiscussionsModel> discussionList, MergeRequestModel mergeRequestModelOptional, GitMRDialog gitMRDialog) {
+    public void addComponent(JPanel panel, MergeRequestModel mergeRequestModelOptional, GitMRDialog gitMRDialog) {
         JButton button = new JButton("Resolve Discussion");
         Object[] columnNames = {"Comment", "File", "Resolve"};
         mergeRequestModel = mergeRequestModelOptional;
         this.gitMRDialog = gitMRDialog;
         List<GitLabUserNotesModel> notesList = new ArrayList<>();
+        List<GitLabDiscussionsModel> discussionList = mergeRequestModelOptional.getListOfMRDiscussions();
 
         discussionList.forEach(discussion ->
             discussion.getNotes().forEach(note -> {

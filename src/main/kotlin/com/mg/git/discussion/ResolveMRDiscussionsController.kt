@@ -13,16 +13,15 @@ class ResolveMRDiscussionsController {
 
     fun resolveDiscussion(
         discussionId: String,
-        projectId: Int,
         mergeRequest: GitlabMergeRequest,
         resolveFlag: Boolean
     ): Boolean? {
         val tailUrl = GitlabProject.URL + "/" + mergeRequest.projectId +
                 GitlabMergeRequest.URL + "/" + mergeRequest.iid +
                 GitLabDiscussionsModel.URL + "/" + discussionId + Pagination().withPerPage(Pagination.MAX_ITEMS_PER_PAGE).toString() + resolved + resolveFlag
-        var httpRequestor: GitlabHTTPRequestor = GitConnectionProvider.gitlabAPI.retrieve()
-        httpRequestor = httpRequestor.method("PUT")
-        var model: GitLabDiscussionsModel? = httpRequestor.to(tailUrl, GitLabDiscussionsModel::class.java)
+        var httpRequester: GitlabHTTPRequestor = GitConnectionProvider.gitlabAPI.retrieve()
+        httpRequester = httpRequester.method("PUT")
+        var model: GitLabDiscussionsModel? = httpRequester.to(tailUrl, GitLabDiscussionsModel::class.java)
         return model?.notes?.get(0)?.isResolved!!
     }
 

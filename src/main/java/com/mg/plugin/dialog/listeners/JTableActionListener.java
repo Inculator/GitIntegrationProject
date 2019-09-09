@@ -62,8 +62,8 @@ public class JTableActionListener {
     }
 
     private void resolveDiscussion(Object discussionInstance) {
-        Integer projectId = GitConnectionProvider.projectId;
-        Boolean isResolved = new ResolveMRDiscussionsController().resolveDiscussion(((GitLabUserNotesModel) discussionInstance).getDiscussionId(), projectId, mergeRequestModel.getMergeRequest(), true);
+        Boolean isResolved = new ResolveMRDiscussionsController().resolveDiscussion(((GitLabUserNotesModel) discussionInstance).getDiscussionId(),
+                mergeRequestModel.getMergeRequest(), true);
         if (Boolean.TRUE.equals(isResolved)) gitMRDialog.getDisposable().dispose();
     }
 

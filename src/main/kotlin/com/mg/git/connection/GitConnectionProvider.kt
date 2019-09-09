@@ -7,7 +7,7 @@ object GitConnectionProvider {
     @JvmField
     var projectId = 0
 
-    fun getGitConnectionInstance(hostUrl: String, token: String) {
+    fun createGitConnectionInstance(hostUrl: String, token: String) {
         gitlabAPI = GitlabAPI.connect(hostUrl, token)
     }
 

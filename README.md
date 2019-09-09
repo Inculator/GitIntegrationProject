@@ -5,12 +5,9 @@ This project contains content using which you can connect to GIT API and you can
 This project is meant to ease the process with which the developers can directly access the discussions done on any 
 merge request of any branch on their project by the reviewers.
 
-The phase 1 development includes the showcase of discussions done on any part of code only along with the file name.
+The plugin includes to showcase of discussions done on any part of code only along with the file name and an option to resolve the discussion.
 
 When you click on the discussion, you will automatically be taken up to the page where it was given.
-
-Second, as of now, you will have to manually resolve the comment into GIT and once, that is done, you will no more 
-see the discussions in the list.
 
 ## How to use
 Just unzip the provided zip file from the repository releases in to the following path:
@@ -44,15 +41,29 @@ When you click on the first element, i.e. the merge request, you will find out t
 
 ![image2](ReadmeImages/3.png)
 
-Further when you click on the discussion, you will be navigated to the specific file and the line on which the comment is given.
+If there is no discussion done on the merge request, you will get a good nice message.
+
+Further when you click on the discussion in the middle row, which contains the file on which review is done, you will be navigated to the specific file and the line on which the comment is given.
+
+You can read the comment from the first column of the table and you can then fix it in your code.
+A yellow line hover on the file will appear as shown in the screenshot.
 
 ![image2](ReadmeImages/4.png)
 
-Once, you have done your review comments work, you can now go to GIT server and mark those comments as resolved.
+Once, you have done your review comments work, you can resolve the discussions as described in the Resolve section below.
 After this, the comments will not be visible on this plugin UI.
 
-The second phase of this plugin would include:
+### Resolve Discussion
 
-1. Option to mark the comments resolved directly from the plugin itself.
-2. Option to add a comment for review on a file for a merge request directly from plugin itself.
+Now, you can resolve the discussions directly from the plugin itself. Once, you have fixed your issues, you can go to the plugin and 
+mark your discussion as resolve. It will resolve your discussion on GIT directly.
+
+Next time you will open the plugin to load discussion, you will no longer see the issue that you have resolved.
+
+
+
+
+Upcoming changes of this plugin would include:
+
+1. Option to add a comment for review on a file for a merge request directly from plugin itself.
 

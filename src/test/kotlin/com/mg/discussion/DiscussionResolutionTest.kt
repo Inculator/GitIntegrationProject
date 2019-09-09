@@ -1,7 +1,7 @@
 package com.mg.discussion
 
 import com.mg.git.discussion.ResolveMRDiscussionsController
-import com.mg.git.merge.getMergeRequests
+import com.mg.git.merge.getAllMergeRequests
 import com.mg.mergerequest.GitTestCommons
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
@@ -14,20 +14,19 @@ class DiscussionResolutionTest : GitTestCommons() {
     @Test
     @Order(1)
     fun resolveDiscussion_shouldResolveDiscussionThread() {
-        val listOfMergeRequest = getMergeRequests(projectId)
+        val listOfMergeRequest = getAllMergeRequests(projectId)
         val resolveMergeRequestDiscussions = ResolveMRDiscussionsController()
-        val result = resolveMergeRequestDiscussions.resolveDiscussion(discussionId, projectId, listOfMergeRequest.get(0), true);
+        val result = resolveMergeRequestDiscussions.resolveDiscussion(discussionId, listOfMergeRequest.get(0), true);
         assertEquals(true, result)
     }
 
     @Test
     @Order(10)
     fun unResolveDiscussion_shouldUnResolveDiscussionThread() {
-        val listOfMergeRequest = getMergeRequests(projectId)
+        val listOfMergeRequest = getAllMergeRequests(projectId)
         val resolveMergeRequestDiscussions = ResolveMRDiscussionsController()
         val result = resolveMergeRequestDiscussions.resolveDiscussion(
             discussionId,
-            projectId,
             listOfMergeRequest.get(0),
             false
         );
