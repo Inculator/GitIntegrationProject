@@ -22,7 +22,6 @@ public class GitMRDialog extends MessageDialog {
     private String currentBranch = "master";
     public static Project project;
     private List<GitlabMergeRequest> gitlabMergeRequests;
-    private GitIntegrationProvider gitLabMergeRequestController;
 
     public GitMRDialog(boolean canBeParent) {
         super(project, "Merge Request Handler", "Merge Requests", optionsUser, 1, null, canBeParent);
@@ -32,7 +31,7 @@ public class GitMRDialog extends MessageDialog {
     protected JComponent createCenterPanel() {
         super.createCenterPanel();
         panelWrapperCreator = new PanelWrapperCreator();
-        gitLabMergeRequestController = new GitLabMergeRequestProvider();
+        GitIntegrationProvider gitLabMergeRequestController = new GitLabMergeRequestProvider();
         HostURLModel hostURLModel = getHostURLModel();
         gitLabMergeRequestController.initializeGitConnection(hostURLModel.getHost(), hostURLModel.getAlias(), hostURLModel.getProjectName(), System.getenv("ENV_GIT_TOKEN"));
         gitlabMergeRequests = gitLabMergeRequestController.getAllMergeRequests();
@@ -58,7 +57,7 @@ public class GitMRDialog extends MessageDialog {
 
     private void addListActionListener(JList<String> mergeRequestsList, GitlabMergeRequest mergeRequestForSelectedBranch) {
         mergeRequestsList.addListSelectionListener(l ->
-                new DiscussionPanel(panelWrapperCreator.getPanelWrapper(), mergeRequestsList.getSelectedValue(), mergeRequestForSelectedBranch, this)
+                new DiscussionPanel(panelWrapperCreator.getPanelWrapper(), mergeRequestForSelectedBranch, this)
                         .createDiscussionPanel()
         );
     }

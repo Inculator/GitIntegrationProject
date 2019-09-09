@@ -13,14 +13,12 @@ import java.util.List;
 
 public class DiscussionPanel {
 
-    private String selectedValue;
     private MergeRequestModel myMergeRequestModel;
     private JPanel panelWrapper;
     private GitMRDialog gitMRDialog;
 
-    public DiscussionPanel(JPanel panelWrapper, String selectedValue, GitlabMergeRequest mergeRequestForSelectedBranch, GitMRDialog gitMRDialog) {
+    public DiscussionPanel(JPanel panelWrapper, GitlabMergeRequest mergeRequestForSelectedBranch, GitMRDialog gitMRDialog) {
         this.panelWrapper = panelWrapper;
-        this.selectedValue = selectedValue;
         this.myMergeRequestModel = new GitLabMergeRequestProvider().getMergeRequestsWithDiscussions(mergeRequestForSelectedBranch);
         this.gitMRDialog = gitMRDialog;
         List<Component> userRemovalComponent = new ArrayList<>();

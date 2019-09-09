@@ -3,7 +3,6 @@ package com.mg.plugin.dialog.listeners;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.mg.git.connection.GitConnectionProvider;
 import com.mg.git.discussion.ResolveMRDiscussionsController;
 import com.mg.git.merge.MergeRequestModel;
 import com.mg.mergerequest.GitLabUserNotesModel;
