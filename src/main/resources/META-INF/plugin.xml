@@ -1,9 +1,9 @@
 <idea-plugin>
     <id>GitIntegrationProject.MGGitIntegration.GitIntegrationProject</id>
-    <name>GITMergeRequestPlugin</name>
+    <name>GITMergeRequestToolBox</name>
     <vendor email="mohakgupta.2012@gmail.com" url="">Inculators</vendor>
 
-    <description>This is my plugin designed for handling Merge Request discussions on GITLAB projects</description>
+    <description>This is designed for handling Merge Request discussions on GITLAB projects.</description>
 
     <extensions defaultExtensionNs="com.intellij">
     </extensions>
