@@ -6,7 +6,6 @@
     <description>This is designed for handling Merge Request discussions on GITLAB projects.</description>
 
     <change-notes>First Phase of release for the tool to help users interacting with GITLAB projects only.</change-notes>
-
     <extensions defaultExtensionNs="com.intellij">
     </extensions>
 
